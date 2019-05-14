@@ -1,6 +1,30 @@
+<!DOCTYPE html>
+<html>
 <head>
-  <link href="https://unpkg.com/netlify-cms/dist/cms.css" rel="stylesheet"/>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Stastic Jekyll Editor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    #stastic {
+      width: 100%;
+      height: 100%;
+      border: none;
+      position: absolute;
+    }
+  </style>
 </head>
 <body>
-  <script src="https://unpkg.com/netlify-cms/dist/cms.js"></script>
+  <iframe id="stastic"></iframe>
+  <script>
+    var url = "https://stastic.lexoyo.me/"
+      + "#" + encodeURIComponent(location.href.replace(location.search, "").replace(location.hash, "").replace("/admin", ""))
+      + "/" + encodeURIComponent("jekyll-tests/master/");
+    document.getElementById("stastic").src = url;
+  </script>
 </body>
+</html>
