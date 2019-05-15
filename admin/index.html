@@ -21,10 +21,35 @@
 <body>
   <iframe id="stastic"></iframe>
   <script>
-    var url = "https://stastic.lexoyo.me/"
-      + "#" + encodeURIComponent(location.href.replace(location.search, "").replace(location.hash, "").replace("/admin", ""))
-      + "/" + encodeURIComponent("jekyll-tests/master/");
-    document.getElementById("stastic").src = url;
+    var freez = false;
+    function setIframeSrc() {
+      var API_ROOT_URL = 'http://localhost:4001/';
+      var url = API_ROOT_URL
+        + '#' + encodeURIComponent(window.location.href.replace(window.location.search, '').replace(window.location.hash, '').replace('/admin', ''))
+        + '/' + encodeURIComponent('my-awesome-site/master/')
+        + '/' + window.location.hash.substr(1);
+      console.log('iframe', url);
+      document.getElementById('stastic').src = url;
+    }
+    window.addEventListener('hashchange', function(event) {
+      if(freez) return;
+      console.log('hashchange', window.location.hash);
+      document.getElementById('stastic').contentWindow.postMessage({
+        type: 'hashChanged',
+        route: window.location.hash.substr(1),
+      }, '*');
+      // setIframeSrc();
+    });
+    window.addEventListener('message', function(event) {
+      if(freez) return;
+      console.log('post message admin', event, event.data);
+      if(event.data.type && event.data.route && event.data.type === 'hashChanged') {
+        freez = true;
+        window.location.hash = '#' + event.data.route;
+        setTimeout(function() { freez = false; }, 0);
+      }
+    }, false);
+    setIframeSrc();
   </script>
 </body>
 </html>
