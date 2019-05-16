@@ -23,10 +23,10 @@
   <script>
     var freez = false;
     function setIframeSrc() {
-      var API_ROOT_URL = 'http://localhost:4001/admin.html';
+      var API_ROOT_URL = 'undefined';
       var url = API_ROOT_URL
         + '#' + encodeURIComponent(window.location.href.replace(window.location.search, '').replace(window.location.hash, '').replace('/admin', ''))
-        + '/' + encodeURIComponent('my-awesome-site/master/')
+        + '/' + encodeURIComponent('jekyll-tests/master')
         + '/' + window.location.hash.substr(1);
       console.log('iframe', url);
       document.getElementById('stastic').src = url;
