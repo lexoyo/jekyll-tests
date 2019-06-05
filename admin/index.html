@@ -23,17 +23,17 @@
   <script>
     var freez = false;
     function setIframeSrc() {
-      var API_ROOT_URL = 'https://stastic.lexoyo.me/';
+      var API_ROOT_URL = 'https://content.stastic.net/admin.html';
       var url = API_ROOT_URL
         + '#' + encodeURIComponent(window.location.href.replace(window.location.search, '').replace(window.location.hash, '').replace('/admin', ''))
-        + '/' + encodeURIComponent('jekyll-tests/master/')
+        + '/' + encodeURIComponent('jekyll-tests/tmp')
         + '/' + window.location.hash.substr(1);
-      console.log('iframe', url);
+
       document.getElementById('stastic').src = url;
     }
     window.addEventListener('hashchange', function(event) {
-      if(freez) return;
-      console.log('hashchange', window.location.hash);
+      // if(freez) return;
+
       document.getElementById('stastic').contentWindow.postMessage({
         type: 'hashChanged',
         route: window.location.hash.substr(1),
@@ -41,12 +41,16 @@
       // setIframeSrc();
     });
     window.addEventListener('message', function(event) {
-      if(freez) return;
-      console.log('post message admin', event, event.data);
+      // if(freez) return;
+
       if(event.data.type && event.data.route && event.data.type === 'hashChanged') {
         freez = true;
-        window.location.hash = '#' + event.data.route;
+        if(event.data.replace) window.location.replace('#' + event.data.route);
+        else window.location.hash = '#' + event.data.route;
         setTimeout(function() { freez = false; }, 0);
+      }
+      if(event.data.type && event.data.url && event.data.type === 'redirect') {
+        window.location.href = event.data.url;
       }
     }, false);
     setIframeSrc();
