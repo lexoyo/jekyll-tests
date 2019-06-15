@@ -34,5 +34,5 @@ notPage:
       {%- endunless -%}
     {%- endfor -%}
   ],
-  "data": {{ site.data | jsonify }},
+  "data": {{ site.data | jsonify }}
 }
